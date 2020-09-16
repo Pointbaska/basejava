@@ -1,3 +1,5 @@
+package ru.topjava.webapp.storage;
+
 /**
  * Array based storage for Resumes
  */

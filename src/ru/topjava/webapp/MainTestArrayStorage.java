@@ -1,5 +1,9 @@
+package ru.topjava.webapp;
+
+import ru.topjava.webapp.storage.ArrayStorage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your ru.topjava.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
