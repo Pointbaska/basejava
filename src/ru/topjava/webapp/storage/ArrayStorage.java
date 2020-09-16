@@ -2,6 +2,8 @@ package ru.topjava.webapp.storage;
 
 import ru.topjava.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -10,9 +12,7 @@ public class ArrayStorage {
     private int size = 0;
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage,0,size,null);
         size = 0;
     }
 
@@ -26,29 +26,35 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (r.getUuid() != null & size < storage.length) {
-            storage[size] = r;
-            size++;
+        if (getIndex(r.getUuid()) == -1) {
+            if (size < storage.length) {
+                storage[size] = r;
+                size++;
+            } else {
+                System.out.println("Resume is overflowing");
+            }
+        } else {
+            System.out.println("Resume exists");
         }
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
+        int index = getIndex(uuid);
+        if (index != -1) {
+            return storage[index];
         }
+        System.out.println("Resume doesn't exist");
         return null;
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                break;
-            }
+        int index = getIndex(uuid);
+        if (index != -1) {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        } else {
+            System.out.println("Resume doesn't exist");
         }
     }
 
@@ -65,11 +71,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] cloneResume = new Resume[size];
-        for (int i = 0; i < size; i++) {
-            cloneResume[i] = storage[i];
-        }
-        return cloneResume;
+        return Arrays.copyOf(storage, size);
     }
 
     public int size() {
