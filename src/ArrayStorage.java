@@ -13,6 +13,10 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
+        if (r.uuid != null & size < storage.length) {
+            storage[size] = r;
+            size++;
+        }
     }
 
     Resume get(String uuid) {
