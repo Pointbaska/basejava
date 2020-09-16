@@ -16,6 +16,15 @@ public class ArrayStorage {
         size = 0;
     }
 
+    public void update(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index != -1) {
+            storage[index] = r;
+        } else {
+            System.out.println("Resume doesn't exist");
+        }
+    }
+
     public void save(Resume r) {
         if (r.getUuid() != null & size < storage.length) {
             storage[size] = r;
@@ -41,6 +50,15 @@ public class ArrayStorage {
                 break;
             }
         }
+    }
+
+    public int getIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
