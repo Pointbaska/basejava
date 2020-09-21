@@ -8,33 +8,34 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
     public void clear() {
-        Arrays.fill(storage,0,size,null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (index != -1) {
-            storage[index] = r;
+            storage[index] = resume;
+            System.out.println("Resume with uuid " + resume.getUuid() + " updated");
         } else {
             System.out.println("Resume doesn't exist");
         }
     }
 
-    public void save(Resume r) {
-        if (getIndex(r.getUuid()) == -1) {
+    public void save(Resume resume) {
+        if (getIndex(resume.getUuid()) == -1) {
             if (size < storage.length) {
-                storage[size] = r;
+                storage[size] = resume;
                 size++;
             } else {
                 System.out.println("Resume is overflowing");
             }
         } else {
-            System.out.println("Resume exists");
+            System.out.println("Have a resume with uuid: " + resume.getUuid());
         }
     }
 
@@ -43,7 +44,7 @@ public class ArrayStorage {
         if (index != -1) {
             return storage[index];
         }
-        System.out.println("Resume doesn't exist");
+        System.out.println("No resume exists with uuid: " + uuid);
         return null;
     }
 
@@ -54,11 +55,11 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Resume doesn't exist");
+            System.out.println("No resume exists with uuid: " + uuid);
         }
     }
 
-    public int getIndex(String uuid) {
+    private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
