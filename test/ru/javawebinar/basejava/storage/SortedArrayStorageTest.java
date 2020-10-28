@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 
-    public SortedArrayStorageTest() throws NullPointerException {
+    public SortedArrayStorageTest() {
         super(new SortedArrayStorage());
     }
 }
