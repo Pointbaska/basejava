@@ -3,59 +3,41 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
-    protected ArrayList<Resume> storage = new ArrayList();
+    private List<Resume> storage = new ArrayList();
 
     @Override
-    protected boolean isResumeContains(Resume resume) {
-        return storage.contains(resume);
-    }
-
-    @Override
-    public void addResume(Resume resume) {
+    public void addResume(Resume resume, int index) {
         storage.add(resume);
     }
 
     @Override
-    public void updateResume(Resume resume) {
-        int index = storage.indexOf(resume);
-        storage.set(index, new Resume(resume.getUuid()));
-        System.out.println("Resume " + resume.getUuid() + " updated");
+    public void updateResume(Resume resume, int index) {
+        storage.set(index, resume);
     }
 
     @Override
-    public void deleteResume(String uuid) {
-        Iterator<Resume> iterator = storage.iterator();
-        while (iterator.hasNext()) {
-            String actualUuid = iterator.next().getUuid();
-            if (Objects.equals(uuid, actualUuid)) {
-                iterator.remove();
-                break;
-            }
-        }
+    public void deleteResume(int index) {
+        storage.remove(index);
     }
 
     @Override
-    public Resume getResume(String uuid) {
-        for (Resume resume : storage) {
-            if (Objects.equals(uuid, resume.getUuid())) {
-                return resume;
-            }
-        }
-        return null;
+    public Resume getResume(int index) {
+        return storage.get(index);
     }
 
     @Override
     protected int getIndex(String uuid) {
-        Resume resume = getResume(uuid);
-        if (resume == null) {
-            return -1;
+        int index = -1;
+        for (Resume resume : storage) {
+            if (resume.getUuid().equals(uuid)) {
+                index = storage.indexOf(resume);
+            }
         }
-        return storage.indexOf(resume);
+        return index;
     }
 
     @Override
@@ -70,10 +52,6 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[storage.size()];
-        for (int i = 0; i < storage.size(); i++) {
-            resumes[i] = storage.get(i);
-        }
-        return resumes;
+        return storage.toArray(new Resume[storage.size()]);
     }
 }

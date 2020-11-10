@@ -7,7 +7,7 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-public class AbstractStorageTest {
+public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
