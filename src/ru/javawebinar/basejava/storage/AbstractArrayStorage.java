@@ -40,10 +40,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(String uuid) {
-        if ((Integer) getKey(uuid) > -1) {
-            return true;
-        }
-        return false;
+        return (Integer) getKey(uuid) > -1;
     }
 
     @Override
