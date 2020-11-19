@@ -35,8 +35,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(String uuid) {
-        return mapStorage.containsKey(uuid);
+    protected boolean isExist(Object key) {
+        return mapStorage.containsKey(key);
     }
 
     @Override
