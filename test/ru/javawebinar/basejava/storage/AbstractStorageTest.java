@@ -18,15 +18,10 @@ public abstract class AbstractStorageTest {
     protected static final String UUID_3 = "uuid3";
     protected static final String UUID_4 = "uuid4";
 
-    protected static final String NAME_1 = "D";
-    protected static final String NAME_2 = "C";
-    protected static final String NAME_3 = "B";
-    protected static final String NAME_4 = "A";
-
-    protected static final Resume RESUME_1 = new Resume(UUID_1, NAME_1);
-    protected static final Resume RESUME_2 = new Resume(UUID_2, NAME_2);
-    protected static final Resume RESUME_3 = new Resume(UUID_3, NAME_3);
-    protected static final Resume RESUME_4 = new Resume(UUID_4, NAME_4);
+    protected static final Resume RESUME_1 = new Resume(UUID_1, "D");
+    protected static final Resume RESUME_2 = new Resume(UUID_2, "C");
+    protected static final Resume RESUME_3 = new Resume(UUID_3, "B");
+    protected static final Resume RESUME_4 = new Resume(UUID_4, "A");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -35,9 +30,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(new Resume(UUID_1, NAME_1));
-        storage.save(new Resume(UUID_2, NAME_2));
-        storage.save(new Resume(UUID_3, NAME_3));
+        storage.save(new Resume(UUID_1, "D"));
+        storage.save(new Resume(UUID_2, "C"));
+        storage.save(new Resume(UUID_3, "B"));
     }
 
     @Test
@@ -53,19 +48,19 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() throws Exception {
-        storage.save(new Resume(UUID_4, NAME_4));
+        storage.save(new Resume(UUID_4, "A"));
         assertArray(RESUME_4, RESUME_3, RESUME_2, RESUME_1);
         Assert.assertEquals(4, storage.size());
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() throws Exception {
-        storage.save(new Resume(UUID_1, NAME_1));
+        storage.save(new Resume(UUID_1, "D"));
     }
 
     @Test
     public void update() throws Exception {
-        storage.update(new Resume(UUID_1, NAME_1));
+        storage.update(new Resume(UUID_1, "D"));
         assertArray(RESUME_3, RESUME_2, RESUME_1);
     }
 
