@@ -9,13 +9,10 @@ public class MainCollections {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
-    private static final String NAME_1 = "D";
-    private static final String NAME_2 = "C";
-    private static final String NAME_3 = "B";
 
-    private static final Resume RESUME_1 = new Resume(NAME_1, UUID_1);
-    private static final Resume RESUME_2 = new Resume(NAME_2, UUID_2);
-    private static final Resume RESUME_3 = new Resume(NAME_3, UUID_3);
+    private static final Resume RESUME_1 = new Resume("D", UUID_1);
+    private static final Resume RESUME_2 = new Resume("C", UUID_2);
+    private static final Resume RESUME_3 = new Resume("B", UUID_3);
 
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();
