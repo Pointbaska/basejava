@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ExperienceListSection extends AbstractSection {
     private List<Experience> experienceList;
@@ -29,5 +30,20 @@ public class ExperienceListSection extends AbstractSection {
             result.append(experience.toString()).append("\n");
         }
         return result.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExperienceListSection that = (ExperienceListSection) o;
+
+        return Objects.equals(experienceList, that.experienceList);
+    }
+
+    @Override
+    public int hashCode() {
+        return experienceList != null ? experienceList.hashCode() : 0;
     }
 }

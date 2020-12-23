@@ -1,7 +1,9 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
 
+import java.time.Month;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -30,21 +32,24 @@ public class ResumeTestDat {
         qualifications.addText("MySQL, SQLite, MS SQL, HSQLDB");
         qualifications.addText("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts,");
 
-        Experience wrike = new Experience("Wrike", "wrike.com", "10/2014 - 01/2016",
-                "Старший разработчик (backend)\n" +
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven " +
-                        "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
-        Experience enkata = new Experience("Enkata", "enkate.com", "03/2007 - 06/2008",
-                "Разработчик ПО\n" + "Реализация клиентской (Eclipse RCP) " +
-                        "и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения.");
+        Experience wrike = new Experience("Wrike", "wrike.com", DateUtil.of(2014, Month.of(10)),
+                DateUtil.of(2016, Month.of(1)), "Старший разработчик (backend)\n" +
+                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven " +
+                "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
+        Experience enkata = new Experience("Enkata", "enkate.com", DateUtil.of(2007, Month.of(3)),
+                DateUtil.of(2008, Month.of(6)), "Разработчик ПО\n" +
+                "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей " +
+                "кластерного J2EE приложения.");
 
         ExperienceListSection workExperience = new ExperienceListSection();
         workExperience.addExperience(wrike);
         workExperience.addExperience(enkata);
 
-        Experience coursera = new Experience("Coursera", "coursera.org", "03/2013 - 05/2013",
+        Experience coursera = new Experience("Coursera", "coursera.org",
+                DateUtil.of(2013, Month.of(3)), DateUtil.of(2013, Month.of(5)),
                 "\"Functional Programming Principles in Scala\" by Martin Odersky");
-        Experience luxoft = new Experience("Luxoft", "luxoft-training.ru", "03/2011 - 04/2011",
+        Experience luxoft = new Experience("Luxoft", "luxoft-training.ru",
+                DateUtil.of(2011, Month.of(3)), DateUtil.of(2011, Month.of(4)),
                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
 
         ExperienceListSection educationExperience = new ExperienceListSection();

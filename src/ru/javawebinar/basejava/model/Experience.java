@@ -1,52 +1,69 @@
 package ru.javawebinar.basejava.model;
 
-public class Experience {
-    private String place;
-    private String link;
-    private String period;
-    private String experience;
+import java.time.LocalDate;
+import java.util.Objects;
 
-    public Experience(String place, String link, String period, String experience) {
-        this.place = place;
-        this.link = link;
-        this.period = period;
+public class Experience {
+    private final Link homePage;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String experience;
+
+    public Experience(String name, String url, LocalDate startDate, LocalDate endDate, String experience) {
+        Objects.requireNonNull(startDate, "startDate must not be null");
+        Objects.requireNonNull(endDate, "endDate must not be null");
+        Objects.requireNonNull(experience, "experience must not be null");
+        this.homePage = new Link(name, url);
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.experience = experience;
     }
 
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
+    public Link getLink() {
+        return homePage;
     }
 
     public String getExperience() {
         return experience;
     }
 
-    public void setExperience(String experience) {
-        this.experience = experience;
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Experience that = (Experience) o;
+
+        if (!homePage.equals(that.homePage)) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
+        return experience.equals(that.experience);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = homePage.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + experience.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return place + "\n" + period + " " + experience;
+        return "Experience{" +
+                "homePage = " + homePage +
+                ", startDate = " + startDate +
+                ", endDate = " + endDate +
+                ", experience = '" + experience + '\'' +
+                '}';
     }
 }
