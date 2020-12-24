@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ExperienceListSection extends AbstractSection {
+public class Organization {
+    private final Link homePage;
     private List<Experience> experienceList;
 
-    public ExperienceListSection() {
+    public Organization(String name, String url) {
+        this.homePage = new Link(name, url);
         experienceList = new ArrayList<>();
+    }
+
+    public Link getLink() {
+        return homePage;
     }
 
     public void addExperience(Experience experience) {
@@ -25,11 +31,10 @@ public class ExperienceListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (Experience experience : experienceList) {
-            result.append(experience.toString()).append("\n");
-        }
-        return result.toString();
+        return "Organization{" +
+                "homePage=" + homePage +
+                ", experienceList=" + experienceList +
+                '}';
     }
 
     @Override
@@ -37,13 +42,16 @@ public class ExperienceListSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ExperienceListSection that = (ExperienceListSection) o;
+        Organization that = (Organization) o;
 
+        if (!Objects.equals(homePage, that.homePage)) return false;
         return Objects.equals(experienceList, that.experienceList);
     }
 
     @Override
     public int hashCode() {
-        return experienceList != null ? experienceList.hashCode() : 0;
+        int result = homePage.hashCode();
+        result = 31 * result + (experienceList != null ? experienceList.hashCode() : 0);
+        return result;
     }
 }

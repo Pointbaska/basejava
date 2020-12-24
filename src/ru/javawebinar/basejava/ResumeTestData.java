@@ -7,11 +7,12 @@ import java.time.Month;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class ResumeTestDat {
+public class ResumeTestData {
     public static void main(String[] args) {
+    }
 
-        Resume resume = new Resume("Григорий Кислин");
-
+    public Resume getInstanseResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
         TextSection personal = new TextSection();
         personal.setText("Аналитический склад ума, сильная логика, креативность," +
                 " инициативность. Пурист кода и архитектуры.");
@@ -32,42 +33,47 @@ public class ResumeTestDat {
         qualifications.addText("MySQL, SQLite, MS SQL, HSQLDB");
         qualifications.addText("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts,");
 
-        Experience wrike = new Experience("Wrike", "wrike.com", DateUtil.of(2014, Month.of(10)),
+        Organization wrike = new Organization("Wrike", "wrike.com");
+        Experience wrikeExperience = new Experience(DateUtil.of(2014, Month.of(10)),
                 DateUtil.of(2016, Month.of(1)), "Старший разработчик (backend)\n" +
                 "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven " +
                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
-        Experience enkata = new Experience("Enkata", "enkate.com", DateUtil.of(2007, Month.of(3)),
+        wrike.addExperience(wrikeExperience);
+
+        Organization enkata = new Organization("Enkate", "enkate.com");
+        Experience enkataExperience = new Experience(DateUtil.of(2007, Month.of(3)),
                 DateUtil.of(2008, Month.of(6)), "Разработчик ПО\n" +
                 "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей " +
                 "кластерного J2EE приложения.");
+        enkata.addExperience(enkataExperience);
 
-        ExperienceListSection workExperience = new ExperienceListSection();
-        workExperience.addExperience(wrike);
-        workExperience.addExperience(enkata);
+        OrganizationListSection workOrganizations = new OrganizationListSection();
+        workOrganizations.addOrganization(wrike);
+        workOrganizations.addOrganization(enkata);
 
-        Experience coursera = new Experience("Coursera", "coursera.org",
-                DateUtil.of(2013, Month.of(3)), DateUtil.of(2013, Month.of(5)),
+        Organization coursera = new Organization("Coursera", "coursera.com");
+        Experience courseraExperience = new Experience(DateUtil.of(2013, Month.of(3)), DateUtil.of(2013, Month.of(5)),
                 "\"Functional Programming Principles in Scala\" by Martin Odersky");
-        Experience luxoft = new Experience("Luxoft", "luxoft-training.ru",
-                DateUtil.of(2011, Month.of(3)), DateUtil.of(2011, Month.of(4)),
-                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
+        coursera.addExperience(courseraExperience);
 
-        ExperienceListSection educationExperience = new ExperienceListSection();
-        educationExperience.addExperience(coursera);
-        educationExperience.addExperience(luxoft);
+        Organization luxoft = new Organization("Luxoft", "luxoft.org");
+        Experience luxoftExperience = new Experience(DateUtil.of(2011, Month.of(3)), DateUtil.of(2011, Month.of(4)),
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
+        luxoft.addExperience(luxoftExperience);
+
+        OrganizationListSection educationOrganizations = new OrganizationListSection();
+        educationOrganizations.addOrganization(coursera);
+        educationOrganizations.addOrganization(luxoft);
 
         Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
         sections.put(SectionType.PERSONAL, personal);
         sections.put(SectionType.OBJECTIVE, objective);
         sections.put(SectionType.ACHIEVEMENT, achievement);
         sections.put(SectionType.QUALIFICATIONS, qualifications);
-        sections.put(SectionType.EXPERIENCE, workExperience);
-        sections.put(SectionType.EDUCATION, educationExperience);
+        sections.put(SectionType.EXPERIENCE, workOrganizations);
+        sections.put(SectionType.EDUCATION, educationOrganizations);
 
         resume.setSectionType(sections);
-        for (Map.Entry<SectionType, AbstractSection> map : sections.entrySet()) {
-            System.out.println(map.getKey().getTitle() + "\n" + resume.getSection(map.getKey()));
-        }
 
         Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         contacts.put(ContactType.PHONE, "+7(921)855-0482");
@@ -79,8 +85,7 @@ public class ResumeTestDat {
         contacts.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
         resume.setContacts(contacts);
-        for (Map.Entry<ContactType, String> map : contacts.entrySet()) {
-            System.out.println(map.getKey().getTitle() + ": " + resume.getContact(map.getKey()));
-        }
+
+        return resume;
     }
 }
