@@ -11,7 +11,7 @@ public class ResumeTestData {
     public static void main(String[] args) {
     }
 
-    public Resume getInstanseResume(String uuid, String fullName) {
+    public static Resume getInstanceResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         TextSection personal = new TextSection();
         personal.setText("Аналитический склад ума, сильная логика, креативность," +
