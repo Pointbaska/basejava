@@ -9,9 +9,22 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
-
     // protected final Logger LOG = Logger.getLogger(getClass().getClassName());
     private final static Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+
+    protected abstract void addResume(Resume resume, SK searchKey);
+
+    protected abstract void updateResume(Resume resume, SK searchKey);
+
+    protected abstract void deleteResume(SK searchKey);
+
+    protected abstract Resume getResume(SK searchKey);
+
+    protected abstract SK getSearchKey(String uuid);
+
+    protected abstract boolean isExist(SK uuid);
+
+    protected abstract List<Resume> getAll();
 
     @Override
     public void update(Resume resume) {
@@ -68,18 +81,4 @@ public abstract class AbstractStorage<SK> implements Storage {
         }
         return searchKey;
     }
-
-    protected abstract void addResume(Resume resume, SK searchKey);
-
-    protected abstract void updateResume(Resume resume, SK searchKey);
-
-    protected abstract void deleteResume(SK searchKey);
-
-    protected abstract Resume getResume(SK searchKey);
-
-    protected abstract SK getSearchKey(String uuid);
-
-    protected abstract boolean isExist(SK uuid);
-
-    protected abstract List<Resume> getAll();
 }

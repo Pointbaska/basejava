@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava;
+package ru.javawebinar.basejava.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +31,7 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        File direc = new File("../basejava");
-        printFiles(direc);
+        printFiles(dir);
     }
 
     public static void printFiles(File file) {
@@ -41,9 +40,10 @@ public class MainFile {
 
         for (File value : files) {
             if (value.isFile()) {
-                System.out.println(value.getName());
+                System.out.println("\tFile: " + value.getName());
             }
             if (value.isDirectory()) {
+                System.out.println("Directory: " + value.getName());
                 printFiles(value);
             }
         }
