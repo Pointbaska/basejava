@@ -1,11 +1,11 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class StorageStrategy implements SerializeStrategy {
+public class ObjectSerializeStrategy implements SerializeStrategy {
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
@@ -19,7 +19,7 @@ public class StorageStrategy implements SerializeStrategy {
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
         } catch (ClassNotFoundException e) {
-            throw new StorageException("Error read resume", null, e);
+            throw new StorageException("Error read resume", e);
         }
     }
 }
