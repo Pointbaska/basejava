@@ -9,6 +9,13 @@ public class ListSection extends AbstractSection {
 
     private List<String> listText = new ArrayList<>();
 
+    public ListSection() {
+    }
+
+    public ListSection(List<String> listText) {
+        this.listText = listText;
+    }
+
     public void addText(String text) {
         listText.add(text);
     }

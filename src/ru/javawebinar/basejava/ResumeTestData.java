@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.util;
+package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.util.DateUtil;
@@ -73,7 +73,7 @@ public class ResumeTestData {
         sections.put(SectionType.EXPERIENCE, workOrganizations);
         sections.put(SectionType.EDUCATION, educationOrganizations);
 
-        resume.setSectionType(sections);
+        resume.setSections(sections);
 
         Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         contacts.put(ContactType.PHONE, "+7(921)855-0482");

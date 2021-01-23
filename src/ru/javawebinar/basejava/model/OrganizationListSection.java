@@ -13,6 +13,10 @@ public class OrganizationListSection extends AbstractSection {
         organizations = new ArrayList<>();
     }
 
+    public OrganizationListSection(List<Organization> organizations) {
+        this.organizations = organizations;
+    }
+
     public void addOrganization(Organization organization) {
         organizations.add(organization);
     }
@@ -21,7 +25,7 @@ public class OrganizationListSection extends AbstractSection {
         organizations.remove(organization);
     }
 
-    public List<Organization> getListExperience() {
+    public List<Organization> getOrganizationList() {
         return organizations;
     }
 

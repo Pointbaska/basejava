@@ -1,19 +1,34 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Link homePage;
+    private Link homePage;
     private List<Experience> experienceList;
+
+    public Organization() {
+    }
 
     public Organization(String name, String url) {
         this.homePage = new Link(name, url);
         experienceList = new ArrayList<>();
+    }
+
+    public Organization(String name, String url, List<Experience> experienceList) {
+        this.homePage = new Link(name, url);
+        this.experienceList = experienceList;
+    }
+
+    public Link getHomePage() {
+        return homePage;
     }
 
     public Link getLink() {
@@ -28,7 +43,7 @@ public class Organization implements Serializable {
         experienceList.remove(experience);
     }
 
-    public List<Experience> getListExperience() {
+    public List<Experience> getExperienceList() {
         return experienceList;
     }
 
