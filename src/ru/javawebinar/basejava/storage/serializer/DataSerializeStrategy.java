@@ -46,8 +46,9 @@ public class DataSerializeStrategy implements SerializeStrategy {
                             writeWithoutException(expList, dos, l -> {
                                         dos.writeUTF(l.getStartDate().toString());
                                         dos.writeUTF(l.getEndDate().toString());
-                                        if (l.getExperience() != null) {
-                                            dos.writeUTF(l.getExperience());
+                                        dos.writeUTF(l.getTitle());
+                                        if (l.getDescription() != null) {
+                                            dos.writeUTF(l.getDescription());
                                         } else dos.writeUTF("null");
                                     }
                             );
@@ -93,15 +94,15 @@ public class DataSerializeStrategy implements SerializeStrategy {
                             for (int k = 0; k < experienceListSize; k++) {
                                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                                 LocalDate endDate = LocalDate.parse(dis.readUTF());
-                                String experience = dis.readUTF();
-                                if (experience.equals("null"))
-                                    experience = null;
+                                String title = dis.readUTF();
+                                String description = dis.readUTF();
                                 experienceList.add(new Experience(
                                         startDate,
                                         endDate,
-                                        experience));
+                                        title,
+                                        description.equals("null") ? null : description));
                             }
-                            organizations.add(new Organization(name, url, experienceList));
+                            organizations.add(new Organization(new Link(name, url.equals("null") ? null : url), experienceList));
                         }
                         resume.addSection(sectionType, new OrganizationListSection(organizations));
                     }
