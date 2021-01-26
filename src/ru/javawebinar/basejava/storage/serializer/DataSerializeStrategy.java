@@ -14,48 +14,44 @@ public class DataSerializeStrategy implements SerializeStrategy {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeWithException(contacts.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
             Map<SectionType, AbstractSection> sections = resume.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> pair : sections.entrySet()) {
+            writeWithException(sections.entrySet(), dos, pair -> {
                 SectionType sectionType = pair.getKey();
+                dos.writeUTF(pair.getKey().name());
 
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> {
-                        dos.writeUTF(pair.getKey().name());
                         dos.writeUTF(((TextSection) pair.getValue()).getText());
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        dos.writeUTF(pair.getKey().name());
                         List<String> list = ((ListSection) pair.getValue()).getListText();
-                        writeWithoutException(list, dos, dos::writeUTF);
+                        writeWithException(list, dos, dos::writeUTF);
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        dos.writeUTF(pair.getKey().name());
                         List<Organization> orgList = ((OrganizationListSection) pair.getValue()).getOrganizationList();
-                        writeWithoutException(orgList, dos, e ->
+                        writeWithException(orgList, dos, e ->
                         {
                             dos.writeUTF(e.getHomePage().getName());
-                            dos.writeUTF(e.getHomePage().getUrl());
-                            List<Experience> expList = e.getExperienceList();
-                            writeWithoutException(expList, dos, l -> {
+                            String url = e.getHomePage().getUrl();
+                            dos.writeUTF(url == null ? "null" : url);
+                            List<Organization.Experience> expList = e.getExperienceList();
+                            writeWithException(expList, dos, l -> {
                                         dos.writeUTF(l.getStartDate().toString());
                                         dos.writeUTF(l.getEndDate().toString());
                                         dos.writeUTF(l.getTitle());
-                                        if (l.getDescription() != null) {
-                                            dos.writeUTF(l.getDescription());
-                                        } else dos.writeUTF("null");
+                                        String description = l.getDescription();
+                                        dos.writeUTF(description == null ? "null" : description);
                                     }
                             );
                         });
                     }
                 }
-            }
+            });
         }
     }
 
@@ -65,59 +61,67 @@ public class DataSerializeStrategy implements SerializeStrategy {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int contactSize = dis.readInt();
-            for (int i = 0; i < contactSize; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readWithException(dis, () ->
+                    resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()
+                    ));
 
-            int sectionSize = dis.readInt();
-            for (int i = 0; i < sectionSize; i++) {
+            readWithException(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                    case PERSONAL, OBJECTIVE -> {
+                        resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                    }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
                         List<String> listSection = new ArrayList<>();
-                        int listSectionSize = dis.readInt();
-                        for (int j = 0; j < listSectionSize; j++) {
-                            listSection.add(dis.readUTF());
-                        }
+                        readWithException(dis, () ->
+                                listSection.add(dis.readUTF()));
                         resume.addSection(sectionType, new ListSection(listSection));
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        int organizationsSize = dis.readInt();
                         List<Organization> organizations = new ArrayList<>();
-                        for (int j = 0; j < organizationsSize; j++) {
-                            String name = dis.readUTF();
-                            String url = dis.readUTF();
-                            List<Experience> experienceList = new ArrayList<>();
-                            int experienceListSize = dis.readInt();
-                            for (int k = 0; k < experienceListSize; k++) {
-                                LocalDate startDate = LocalDate.parse(dis.readUTF());
-                                LocalDate endDate = LocalDate.parse(dis.readUTF());
-                                String title = dis.readUTF();
-                                String description = dis.readUTF();
-                                experienceList.add(new Experience(
-                                        startDate,
-                                        endDate,
-                                        title,
-                                        description.equals("null") ? null : description));
-                            }
-                            organizations.add(new Organization(new Link(name, url.equals("null") ? null : url), experienceList));
-                        }
+                        readWithException(dis, () ->
+                                {
+                                    String name = dis.readUTF();
+                                    String url = dis.readUTF();
+                                    List<Organization.Experience> experienceList = new ArrayList<>();
+                                    readWithException(dis, () -> {
+                                                LocalDate startDate = LocalDate.parse(dis.readUTF());
+                                                LocalDate endDate = LocalDate.parse(dis.readUTF());
+                                                String title = dis.readUTF();
+                                                String description = dis.readUTF();
+                                                experienceList.add(new Organization.Experience(
+                                                        startDate,
+                                                        endDate,
+                                                        title,
+                                                        description.equals("null") ? null : description));
+                                            }
+                                    );
+                                    organizations.add(new Organization(new Link(name, url.equals("null") ? null : url),
+                                            experienceList));
+                                }
+                        );
                         resume.addSection(sectionType, new OrganizationListSection(organizations));
                     }
                 }
-            }
+            });
             return resume;
         }
     }
 
-    private static <T> void writeWithoutException(Collection<T> collection, DataOutputStream dos,
-                                                  SerializeConsumer<T> consumer) throws IOException {
+    private static <T> void writeWithException(Collection<T> collection, DataOutputStream dos,
+                                               SerializeConsumer<T> consumer) throws IOException {
         Objects.requireNonNull(consumer);
         dos.writeInt(collection.size());
         for (T t : collection) {
             consumer.write(t);
+        }
+    }
+
+    private static void readWithException(DataInputStream dis, SerializeReader reader) throws IOException {
+        Objects.requireNonNull(reader);
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            reader.read();
         }
     }
 }

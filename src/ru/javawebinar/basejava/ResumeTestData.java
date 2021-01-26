@@ -17,14 +17,14 @@ public class ResumeTestData {
         resume.addSection(SectionType.EXPERIENCE,
                 new OrganizationListSection(
                         new Organization("Organization11", "http://Organization11.ru",
-                                new Experience(2005, Month.JANUARY, "position1", "content1"),
-                                new Experience(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
+                                new Organization.Experience(2005, Month.JANUARY, "position1", "content1"),
+                                new Organization.Experience(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
         resume.addSection(SectionType.EDUCATION,
                 new OrganizationListSection(
                         new Organization("Institute", "url",
-                                new Experience(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                                new Organization.Experience(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
                         new Organization("Organization12", "http://Organization12.ru",
-                                new Experience(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null))));
+                                new Organization.Experience(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null))));
         resume.addContact(ContactType.PHONE, "+1 - 666");
         resume.addContact(ContactType.EMAIL, "kit@mail.ru");
         resume.addContact(ContactType.GITHUB, "github");

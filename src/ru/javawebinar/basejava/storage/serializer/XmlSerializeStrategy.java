@@ -11,7 +11,7 @@ public class XmlSerializeStrategy implements SerializeStrategy {
 
     public XmlSerializeStrategy() {
         xmlParser = new XmlParser(
-                Resume.class, Link.class, Organization.class, Experience.class,
+                Resume.class, Link.class, Organization.class, Organization.Experience.class,
                 OrganizationListSection.class, TextSection.class, ListSection.class);
     }
 
