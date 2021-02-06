@@ -18,7 +18,6 @@ public class MainStreamAPI {
 
     private static int minValue(int[] values) {
         return Arrays.stream(values)
-                .filter(s -> 0 < s && s < 10)
                 .distinct()
                 .sorted()
                 .reduce(0, (x, y) -> x * 10 + y);
@@ -29,8 +28,9 @@ public class MainStreamAPI {
                 .mapToInt(i -> i)
                 .sum();
 
+        int remainder = sum % 2;
         return integers.stream()
-                .filter(e -> (sum % 2 == 0 ? (e % 2 == 1) : (e % 2 == 0)))
+                .filter(e -> (remainder + e) % 2 != 0)
                 .collect(Collectors.toList());
     }
 }
