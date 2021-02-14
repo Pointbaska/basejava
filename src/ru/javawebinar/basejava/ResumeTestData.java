@@ -1,8 +1,6 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
-
-import java.time.Month;
+import ru.javawebinar.basejava.model.Resume;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -10,6 +8,7 @@ public class ResumeTestData {
 
     public static Resume getInstanceResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
+        /*
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
         resume.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
         resume.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
@@ -29,6 +28,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.EMAIL, "kit@mail.ru");
         resume.addContact(ContactType.GITHUB, "github");
         resume.addContact(ContactType.SKYPE, "skype2");
+        */
         return resume;
     }
 }

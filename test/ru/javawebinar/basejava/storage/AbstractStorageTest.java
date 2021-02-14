@@ -7,12 +7,13 @@ import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.util.Config;
 
 import java.io.File;
 import java.util.Arrays;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File(".\\.storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     protected Storage storage;
 
