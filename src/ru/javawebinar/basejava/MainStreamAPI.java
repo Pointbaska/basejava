@@ -24,10 +24,9 @@ public class MainStreamAPI {
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
+        int remainder = integers.stream().mapToInt(i -> i).sum() % 2;
         return integers.stream()
-                .filter(e -> e % 2 != integers.stream()
-                        .mapToInt(i -> i)
-                        .sum() % 2)
+                .filter(e -> e % 2 != remainder)
                 .collect(Collectors.toList());
     }
 }

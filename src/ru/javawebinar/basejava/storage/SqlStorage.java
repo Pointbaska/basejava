@@ -4,15 +4,16 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
-    public static SqlHelper sqlHelper;
+    public SqlHelper sqlHelper;
 
-    public SqlStorage(SqlHelper sqlHelper) {
-        this.sqlHelper = sqlHelper;
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
@@ -27,9 +28,10 @@ public class SqlStorage implements Storage {
     public void update(Resume resume) {
         sqlHelper.execute("UPDATE resume SET full_name=? WHERE uuid=?", ps -> {
             ps.setString(1, resume.getFullName());
-            ps.setString(2, resume.getUuid());
+            String uuid = resume.getUuid();
+            ps.setString(2, uuid);
             if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(resume.getUuid());
+                throw new NotExistStorageException(uuid);
             }
             return null;
         });
