@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.util;
 
 import ru.javawebinar.basejava.storage.SqlStorage;
+import ru.javawebinar.basejava.storage.Storage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,9 +13,8 @@ public class Config {
     private static final File PROPS_DIR = new File("config\\resumes.properties");
     private static final Config INSTANCE = new Config();
 
-    private Properties props;
-    private File storageDir;
-    private SqlStorage sqlStorage;
+    private final File storageDir;
+    private final Storage storage;
 
     public static Config getInstance() {
         return INSTANCE;
@@ -22,10 +22,10 @@ public class Config {
 
     private Config() {
         try (InputStream is = new FileInputStream(PROPS_DIR)) {
-            props = new Properties();
+            Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
-            sqlStorage = new SqlStorage(props.getProperty("db.url"),
+            storage = new SqlStorage(props.getProperty("db.url"),
                     props.getProperty("db.user"),
                     props.getProperty("db.password"));
         } catch (IOException e) {
@@ -37,7 +37,7 @@ public class Config {
         return storageDir;
     }
 
-    public SqlStorage getSqlStorage() {
-        return sqlStorage;
+    public Storage getStorage() {
+        return storage;
     }
 }

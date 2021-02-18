@@ -8,16 +8,20 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlHelper {
-    public final ConnectionFactory connectionFactory;
+    private final ConnectionFactory connectionFactory;
 
     public SqlHelper(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T execute(String sqlCommand, PreparedStatementExecute<T> pse) {
+    public void execute(String sqlCommand) {
+        execute(sqlCommand, PreparedStatement::execute);
+    }
+
+    public <T> T execute(String sqlCommand, SqlPreparedStatement<T> sps) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlCommand)) {
-            return pse.executePs(ps);
+            return sps.executePs(ps);
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {
                 throw new ExistStorageException(e);
