@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 
 public class ResumeTestData {
@@ -24,11 +25,11 @@ public class ResumeTestData {
                                 new Organization.Experience(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
                         new Organization("Organization12", "http://Organization12.ru",
                                 new Organization.Experience(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null))));
+                                */
         resume.addContact(ContactType.PHONE, "+1 - 666");
         resume.addContact(ContactType.EMAIL, "kit@mail.ru");
         resume.addContact(ContactType.GITHUB, "github");
         resume.addContact(ContactType.SKYPE, "skype2");
-        */
         return resume;
     }
 }
